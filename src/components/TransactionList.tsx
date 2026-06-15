@@ -11,7 +11,8 @@ import {
   Check,
   X,
   AlertTriangle,
-  Pencil
+  Pencil,
+  Save
 } from 'lucide-react';
 import { FinancialItem, TransactionType, Category } from '../types';
 
@@ -713,8 +714,9 @@ export default function TransactionList({ items, categories, onTogglePaid, onDel
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-500 text-white rounded-xl font-bold text-xs shadow-lg shadow-teal-600/10 cursor-pointer"
+                className="flex-1 px-4 py-2.5 bg-teal-600 hover:bg-teal-500 text-white rounded-xl font-bold text-xs shadow-lg shadow-teal-600/10 cursor-pointer flex items-center justify-center gap-1.5"
               >
+                <Save className="w-3.5 h-3.5" />
                 Salvar Alterações
               </button>
             </div>

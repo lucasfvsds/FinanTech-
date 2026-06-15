@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, HelpCircle, AlertCircle, Calendar } from 'lucide-react';
+import { Plus, HelpCircle, AlertCircle, Calendar, Save } from 'lucide-react';
 import { 
   FinancialItem, 
   TransactionType, 
@@ -416,8 +416,9 @@ export default function TransactionForm({ categories, onAddTransactions }: Trans
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center gap-1"
+              className="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5"
             >
+              <Save className="w-3.5 h-3.5" />
               Salvar Lançamento
             </button>
           </div>

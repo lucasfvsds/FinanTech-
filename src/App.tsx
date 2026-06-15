@@ -233,8 +233,8 @@ export default function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [greeting, setGreeting] = useState('');
   
-  // Controle de Abas Ativas: 'principal' | 'planilha' | 'ai'
-  const [activeTab, setActiveTab] = useState<'principal' | 'planilha' | 'ai'>('principal');
+  // Controle de Abas Ativas: 'principal' | 'planilha'
+  const [activeTab, setActiveTab] = useState<'principal' | 'planilha'>('principal');
 
   // Controle de competência mensal YYYY-MM
   const [selectedMonth, setSelectedMonth] = useState<string>(() => {
@@ -684,18 +684,6 @@ export default function App() {
                 <Table className="w-3.5 h-3.5" />
                 Planilha Excel
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('ai')}
-                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
-                  activeTab === 'ai' 
-                    ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/15' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/30'
-                }`}
-              >
-                <Brain className="w-3.5 h-3.5" />
-                Assistente IA
-              </button>
             </nav>
 
             {/* Quick Demo Re-Seeder */}
@@ -1084,198 +1072,6 @@ export default function App() {
                 <span>Total Entradas: <strong className="text-emerald-400">{formatCurrency(summary.totalIncome)}</strong></span>
                 <span>Total Saídas: <strong className="text-rose-400">{formatCurrency(summary.totalExpense)}</strong></span>
               </div>
-            </div>
-
-          </div>
-        )}
-
-        {/* ------------------------------------------------------------- */}
-        {/* TAB 3: ARTIFICIAL INTELLIGENCE CONSULTANT (GEMINI) */}
-        {/* ------------------------------------------------------------- */}
-        {activeTab === 'ai' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-fade-in duration-300">
-            
-            {/* Column 1: Financial Diagnostic Audit Analyzer */}
-            <div className="lg:col-span-5 space-y-6">
-              
-              <div className="bg-slate-950/40 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col justify-between min-h-[350px]">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-teal-500/10 text-teal-400 p-2 rounded-xl border border-teal-500/20">
-                        <Brain className="w-5 h-5" />
-                      </div>
-                      <h3 className="text-base font-bold text-white">Auditoria Mensal</h3>
-                    </div>
-                    <span className="text-[10px] text-slate-400 font-mono bg-teal-500/5 px-2 py-0.5 rounded border border-teal-500/10">Gemini-3.5-Flash</span>
-                  </div>
-
-                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                    Clique no botão abaixo para consolidar todo o balanço de despesas, saldos e parcelas do mês correspondente e submeter ao conselho analítico da Inteligência Artificial.
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={handleGenerateMonthlyInsights}
-                    disabled={generatingInsights || activeMonthTransactions.length === 0}
-                    className="w-full bg-gradient-to-r from-teal-500 via-emerald-600 to-cyan-500 text-white py-3 px-4 rounded-xl text-xs font-bold shadow-lg hover:shadow-teal-500/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                  >
-                    {generatingInsights ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
-                        Gerando diagnóstico...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkle className="w-4 h-4 text-amber-250 animate-pulse" />
-                        Gerar Diagnóstico Financeiro
-                      </>
-                    )}
-                  </button>
-                  {activeMonthTransactions.length === 0 && (
-                    <p className="text-[10px] text-amber-500 mt-2 text-center">
-                      * Lance au menos uma conta no mês para gerar análises consistentes.
-                    </p>
-                  )}
-                </div>
-
-                {/* Report Insights presentation rendered elegantly */}
-                {aiInsights && (
-                  <div className="mt-5 bg-slate-900/80 border border-slate-800 p-4 rounded-2xl max-h-[350px] overflow-y-auto">
-                    <div className="prose prose-invert text-xs text-slate-300 leading-relaxed space-y-3">
-                      {aiInsights.split('\n').map((line, i) => {
-                        const cleanLine = line.trim();
-                        if (cleanLine.startsWith('###')) {
-                          return <h4 key={i} className="text-sm font-bold text-teal-300 mt-3 border-b border-teal-500/5 pb-1">{cleanLine.replace('###', '')}</h4>;
-                        }
-                        if (cleanLine.startsWith('##')) {
-                          return <h3 key={i} className="text-base font-extrabold text-white mt-4">{cleanLine.replace('##', '')}</h3>;
-                        }
-                        if (cleanLine.startsWith('*')) {
-                          return <li key={i} className="ml-3 list-disc text-slate-300 mt-1">{cleanLine.replace('*', '').trim()}</li>;
-                        }
-                        return <p key={i} className="mb-1 leading-relaxed">{line}</p>;
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Proposed transaction launch draft extracted from AI chat logs */}
-              {draftTransaction && (
-                <div className="bg-gradient-to-tr from-slate-950 to-teal-950 border border-teal-500/30 p-5 rounded-3xl shadow-2xl animate-in slide-in-from-bottom-2 duration-200">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Check className="w-5 h-5 text-emerald-400 stroke-[3]" />
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Lançamento Inteligente Proposto</h4>
-                  </div>
-                  
-                  <p className="text-xs text-slate-300 mb-4 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                    "{draftTransaction.explanation}"
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3.5 text-xs bg-slate-900/70 p-3 rounded-xl border border-slate-800 mb-4">
-                    <div>
-                      <span className="text-slate-500 block text-[9px] uppercase font-bold tracking-wider">Descrição</span>
-                      <strong className="text-slate-200">{draftTransaction.title}</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-500 block text-[9px] uppercase font-bold tracking-wider">Valor Líquido</span>
-                      <strong className="text-emerald-400">{formatCurrency(draftTransaction.amount)}</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-500 block text-[9px] uppercase font-bold tracking-wider">Categoria</span>
-                      <strong className="text-slate-200">{draftTransaction.category}</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-500 block text-[9px] uppercase font-bold tracking-wider">Vencimento</span>
-                      <strong className="text-slate-200">{draftTransaction.dueDate}</strong>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setDraftTransaction(null)}
-                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-350 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer"
-                    >
-                      Descartar
-                    </button>
-                    <button
-                      type="button"
-                      onClick={saveDraftTransaction}
-                      className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:scale-[1.02] text-white py-2.5 rounded-xl text-xs font-black shadow-lg shadow-emerald-500/10 transition-all cursor-pointer"
-                    >
-                      Confirmar Lançamento
-                    </button>
-                  </div>
-                </div>
-              )}
-
-            </div>
-
-            {/* Column 2: Conversational Expert Assistant Chat Sandbox */}
-            <div className="lg:col-span-7 flex flex-col bg-slate-950/40 border border-slate-800 rounded-3xl h-[650px] shadow-xl overflow-hidden">
-              
-              {/* Chat Sub header toolbar */}
-              <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Chat & Comandos Inteligentes</h4>
-                    <p className="text-[10px] text-slate-500">Insira faturas por text e pergunte conselhos gerais</p>
-                  </div>
-                </div>
-                <div className="bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg text-[9px] font-bold text-slate-400 uppercase">
-                  Conexão Ativa
-                </div>
-              </div>
-
-              {/* Messages container wrapper */}
-              <div className="flex-1 p-5 overflow-y-auto space-y-4 max-h-[500px]">
-                {aiChatHistory.map((chat, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex ${chat.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`max-w-[85%] rounded-2xl p-4 text-xs leading-relaxed shadow-lg ${
-                      chat.role === 'user'
-                        ? 'bg-teal-600 text-white rounded-tr-none'
-                        : 'bg-slate-900 text-slate-200 border border-slate-800 rounded-tl-none'
-                    }`}>
-                      <p className="whitespace-pre-wrap">{chat.text}</p>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Typing load indicators */}
-                {aiChatLoading && (
-                  <div className="flex justify-start items-center gap-2">
-                    <div className="bg-slate-900 text-slate-400 border border-slate-800 rounded-2xl rounded-tl-none p-4 text-xs shadow-lg flex items-center gap-2.5">
-                      <Loader2 className="w-4 h-4 text-teal-500 animate-spin" />
-                      <span className="text-teal-300 font-semibold uppercase tracking-wider text-[9px]">Analisando com Gemini...</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Message interactive form controls */}
-              <form onSubmit={sendChatMessage} className="p-4 border-t border-slate-800 bg-slate-950/70 flex items-center gap-3">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ex: 'paguei 40 reais com almoço ontem' ou 'como economizar?'..."
-                  className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
-                />
-                <button
-                  type="submit"
-                  disabled={aiChatLoading}
-                  className="bg-teal-600 hover:bg-teal-500 p-3 rounded-2xl text-white shadow-lg transition-all cursor-pointer disabled:opacity-40"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
-
             </div>
 
           </div>
