@@ -1,0 +1,6 @@
+{
+  "name": "Minhas Finanças",
+  "description": "Aplicativo de controle financeiro pessoal para gerenciar receitas, despesas, contas fixas e parceladas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
